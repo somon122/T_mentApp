@@ -36,5 +36,25 @@
         app:layout_constraintTop_toBottomOf="@+id/image1" />
 
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="#F80505"
+        android:indeterminate="true"
+        android:max="100"
+        android:progress="0"
+        android:progressBackgroundTint="#FA0404"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.853" />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

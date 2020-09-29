@@ -2,18 +2,46 @@ package com.example.pta;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.pta.wallet.WithdrawAdapter;
+import com.example.pta.wallet.WithdrawClass;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class ProfileSetUpActivity extends AppCompatActivity {
 
-    TextInputLayout Fname,Uname,UPhone,Pass;
-    Button regbtn;
-
+    TextInputLayout nameET,emailET,numberET,referCodeET;
+    Button submitBtn;
+    CheckBox checkBox;
+    SaveUserInfo saveUserInfo;
+    String update = null;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,95 +49,282 @@ public class ProfileSetUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile_set_up);
 
 
-        Fname = findViewById(R.id.Rfullname);
-        Uname = findViewById(R.id.RUsername);
-        UPhone = findViewById(R.id.RPhone);
-        Pass = findViewById(R.id.Rpassword);
-        regbtn = findViewById(R.id.reg);
+        saveUserInfo= new SaveUserInfo(this);
+        submitBtn = findViewById(R.id.profileSubmit_id);
+        checkBox = findViewById(R.id.profileCheckBox);
+        progressBar= findViewById(R.id.profileSubmitProgressBar);
+        progressBar.setVisibility(View.GONE);
+
+        nameET = findViewById(R.id.profileUserName);
+        emailET = findViewById(R.id.profileEmailAddress);
+        numberET = findViewById(R.id.profileNumber);
+        referCodeET = findViewById(R.id.profileReferCode);
+        numberET.getEditText().setText(saveUserInfo.getNumber());
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+            update = bundle.getString("status");
+            if (update.equals("update")){
+                nameET.getEditText().setText(saveUserInfo.getUserName());
+                numberET.getEditText().setText(saveUserInfo.getNumber());
+                emailET.getEditText().setText(saveUserInfo.getEmail());
+                submitBtn.setText("Update");
+                referCodeET.setVisibility(View.GONE);
+            }
 
 
-
-
-
-
-    }
-
-
-    private Boolean Validatename(){
-        String Name = Fname.getEditText().getText().toString();
-
-        if (Name.isEmpty()){
-            Fname.setError("Field Can't Be Empty");
-            return false;
+        }else {
+            numberET.getEditText().setText(saveUserInfo.getNumber());
+            numberET.setEnabled(true);
         }
-        else
-            Fname.setError(null);
-            Fname.setErrorEnabled(false);
-            return true;
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkBox.isChecked()){
+                    SubmitProfile();
+                }else {
+
+                    Toast.makeText(ProfileSetUpActivity.this, "Please complete check ", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
-    private Boolean validateUsername() {
-        String val = Uname.getEditText().getText().toString();
-        String noWhiteSpace = "\\A\\w{4,20}\\z";
 
-        if (val.isEmpty()) {
-            Uname.setError("Field cannot be empty");
-            return false;
-        } else if (val.length() >= 15) {
-            Uname.setError("Username too long");
-            return false;
-        } else if (!val.matches(noWhiteSpace)) {
-           Uname.setError("White Spaces are not allowed");
-            return false;
-        } else {
-            Uname.setError(null);
-            Uname.setErrorEnabled(false);
-            return true;
-        }
-    }
-    private Boolean validatePhoneNo() {
-        String val = UPhone.getEditText().getText().toString();
+    private void SubmitProfile() {
 
-        if (val.isEmpty()) {
-            UPhone.setError("Field cannot be empty");
-            return false;
-        } else {
-            UPhone.setError(null);
-            UPhone.setErrorEnabled(false);
-            return true;
-        }
-    }
-    private Boolean validatePassword() {
-        String val = Pass.getEditText().getText().toString();
-        String passwordVal = "^" +
-                //"(?=.*[0-9])" +         //at least 1 digit
-                //"(?=.*[a-z])" +         //at least 1 lower case letter
-                //"(?=.*[A-Z])" +         //at least 1 upper case letter
-                "(?=.*[a-zA-Z])" +      //any letter
-                "(?=.*[@#$%^&+=])" +    //at least 1 special character
-                "(?=\\S+$)" +           //no white spaces
-                ".{4,}" +               //at least 4 characters
-                "$";
+        String name = nameET.getEditText().getText().toString();
+        String emailAdd = emailET.getEditText().getText().toString();
+        String phone = numberET.getEditText().getText().toString();
+        String refer = referCodeET.getEditText().getText().toString().trim();
 
-        if (val.isEmpty()) {
-            Pass.setError("Field cannot be empty");
-            return false;
-        } else if (!val.matches(passwordVal)) {
-            Pass.setError("Password is too weak You can Use @#$%*& To Make Strong");
-            return false;
-        } else {
-            Pass.setError(null);
-            Pass.setErrorEnabled(false);
-            return true;
+
+        if (name.isEmpty()){
+            nameET.getEditText().setError("Please Enter Name");
+        }else if (emailAdd.isEmpty()){
+            emailET.setError("Please Enter Email Address");
+        }else if (phone.isEmpty()){
+            numberET.setError("Please Enter Number");
+        }else {
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss");
+            String currentDateAndTime = sdf.format(new Date());
+
+            if (update.equals("update")){
+
+                progressBar.setVisibility(View.VISIBLE);
+                submitBtn.setEnabled(false);
+                updateProfile(saveUserInfo.getId(),name,emailAdd,phone);
+
+            }else {
+                progressBar.setVisibility(View.VISIBLE);
+                checkUser(name,emailAdd,phone,refer,currentDateAndTime);
+            }
+
         }
     }
 
 
+    private void checkUser(final String userName,final String emailAddress,final String number,final String referCode,final String date_time) {
 
-    public void singin(View view) {
 
-        Intent i = new Intent( ProfileSetUpActivity.this, SignInActivity.class);
-        startActivity(i);
-        finish();
+        String url = getString(R.string.BASS_URL) + "checkUserProfile";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.getString("status").equals("welcome")) {
+
+                        submitBtn.setEnabled(false);
+                       insertProfile(userName,emailAddress,number,referCode,date_time);
+
+                    }else if (obj.getString("status").equals("numberAlreadyExits")){
+
+                        Toast.makeText(ProfileSetUpActivity.this, "numberAlreadyExits", Toast.LENGTH_SHORT).show();
+
+                    }
+                    else if (obj.getString("status").equals("referCodeIsNotExits")){
+
+                        Toast.makeText(ProfileSetUpActivity.this, "referCode is not Exits", Toast.LENGTH_SHORT).show();
+
+                    }
+                    else {
+                        Toast.makeText(ProfileSetUpActivity.this, "Please Try Again", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> Params = new HashMap<>();
+                Params.put("number", number);
+                Params.put("referCode", referCode);
+                return Params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(ProfileSetUpActivity.this);
+        queue.add(stringRequest);
     }
+   private void insertProfile(final String userName,final String emailAddress,final String number,final String referCode,final String date_time) {
+
+
+        String url = getString(R.string.BASS_URL) + "insertUserProfile";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.getBoolean("success")) {
+
+                        getProfile(number,emailAddress);
+
+                    } else {
+                        Toast.makeText(ProfileSetUpActivity.this, "Try Again", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> Params = new HashMap<>();
+                Params.put("userName", userName);
+                Params.put("number", number);
+                Params.put("emailAddress", emailAddress);
+                Params.put("referCode", referCode);
+                Params.put("date_time", date_time);
+                return Params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(ProfileSetUpActivity.this);
+        queue.add(stringRequest);
+    }
+
+
+
+    public void getProfile(final String number, final String email) {
+        String url = getString(R.string.BASS_URL) + "getUserProfile";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.getBoolean("success")) {
+                        String res = obj.getString("user");
+                        JSONArray jsonArray = new JSONArray(res);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject dataobj = jsonArray.getJSONObject(i);
+
+                            String userId = dataobj.getString("id");
+                            String userName = dataobj.getString("userName");
+                            String emailAddress = dataobj.getString("emailAddress");
+                            String number = dataobj.getString("number");
+                            String status = dataobj.getString("conditionStatus");
+                            String referCode = dataobj.getString("referCode");
+                            SaveUserInfo saveUserInfo = new SaveUserInfo(ProfileSetUpActivity.this);
+                            saveUserInfo.dataStore(userId,userName,emailAddress,referCode,number,status);
+
+                            if (saveUserInfo.getId() != null){
+                                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                                finish();
+                            }
+                        }
+
+                    } else {
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> Params = new HashMap<>();
+                Params.put("number", number);
+                Params.put("emailAddress", email);
+                return Params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(ProfileSetUpActivity.this);
+        queue.add(stringRequest);
+    }
+
+
+    private void updateProfile(final String userId, final String userName,final String emailAddress,final String number) {
+
+
+        String url = getString(R.string.BASS_URL) + "updateProfile";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.getBoolean("success")) {
+
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        finish();
+
+                    } else {
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> Params = new HashMap<>();
+                Params.put("userId", userId);
+                Params.put("userName", userName);
+                Params.put("number", number);
+                Params.put("emailAddress", emailAddress);
+                return Params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(ProfileSetUpActivity.this);
+        queue.add(stringRequest);
+    }
+
+
+
+
 }

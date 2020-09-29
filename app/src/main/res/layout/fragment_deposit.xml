@@ -17,8 +17,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:padding="5dp"
+            android:background="#000000"
+            android:textColor="@color/white"
+            android:text="@string/personal_number"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    <TextView
+            android:padding="10dp"
+        android:background="@color/white"
+            android:textColor="@color/Red"
+            android:text="@string/verify_text"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <RadioGroup
-            android:id="@+id/selectRadioGroup"
+            android:id="@+id/selectDepositRadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -27,7 +46,7 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
             <RadioButton
-                android:id="@+id/selectBkash"
+                android:id="@+id/selectDepositBkash"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
@@ -40,7 +59,7 @@
 
 
             <RadioButton
-                android:id="@+id/selectRocket"
+                android:id="@+id/selectDepositRocket"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
@@ -52,7 +71,7 @@
                 android:textSize="20sp" />
 
             <RadioButton
-                android:id="@+id/selectNagot"
+                android:id="@+id/selectDepositNagot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
@@ -68,6 +87,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/depositAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
@@ -87,6 +107,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/depositNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
@@ -106,10 +127,12 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/depositTransaction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
+            app:endIconMode="clear_text"
             android:padding="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -124,6 +147,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/depositSubmitButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="70dp"

@@ -52,7 +52,7 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/profileEmail"
+                    android:id="@+id/profileShowNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/profileUserName"
@@ -93,20 +93,20 @@
                             android:src="@drawable/payment" />
 
                         <TextView
-                            android:id="@+id/money"
+                            android:id="@+id/profileShowBalance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:fontFamily="@font/baloo"
                             android:includeFontPadding="false"
-                            android:text="200TK"
+                            android:text="00TK"
                             android:textSize="20sp" />
 
                         <TextView
                             android:id="@+id/balance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/money"
+                            android:layout_below="@+id/profileShowBalance"
                             android:layout_centerHorizontal="true"
                             android:includeFontPadding="false"
                             android:text="Balance"
@@ -137,20 +137,20 @@
                             android:src="@drawable/played" />
 
                         <TextView
-                            android:id="@+id/played"
+                            android:id="@+id/profileTotalPlayedMatch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:fontFamily="@font/baloo"
                             android:includeFontPadding="false"
-                            android:text="20"
+                            android:text="00"
                             android:textSize="20sp" />
 
                         <TextView
                             android:id="@+id/Played1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/played"
+                            android:layout_below="@+id/profileTotalPlayedMatch"
                             android:layout_centerHorizontal="true"
                             android:includeFontPadding="false"
                             android:text="Played"
@@ -181,20 +181,20 @@
                             android:src="@drawable/t1" />
 
                         <TextView
-                            android:id="@+id/win"
+                            android:id="@+id/profileShowTotalWin"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:fontFamily="@font/baloo"
                             android:includeFontPadding="false"
-                            android:text="20"
+                            android:text="00"
                             android:textSize="20sp" />
 
                         <TextView
                             android:id="@+id/win1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/win"
+                            android:layout_below="@+id/profileShowTotalWin"
                             android:layout_centerHorizontal="true"
                             android:includeFontPadding="false"
                             android:text="Total win"

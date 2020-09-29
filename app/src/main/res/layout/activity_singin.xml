@@ -26,6 +26,7 @@
 
 
     <Button
+        android:id="@+id/login_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="50dp"
@@ -35,6 +36,12 @@
         android:text="Login"
         android:textColor="#fff"
         android:textSize="20dp" />
+
+    <ProgressBar
+        android:id="@+id/signProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>
