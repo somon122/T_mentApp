@@ -34,9 +34,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.pta.R;
-import com.example.pta.result.ResultDetailsActivity;
-import com.example.pta.result.ResultDetailsClass;
-import com.example.pta.result.ResultsDetailsAdapter;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -160,7 +157,7 @@ public class MatchDetailsActivity extends AppCompatActivity {
                     Toast.makeText(MatchDetailsActivity.this, "You are already Joined", Toast.LENGTH_SHORT).show();
 
                 }else {
-                    Intent intent = new Intent(getApplicationContext(),JointInMatchActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), JoinInMatchActivity.class);
                     intent.putExtra("matchId",matchId);
                     intent.putExtra("matchName",matchName);
                     intent.putExtra("type",type);
@@ -180,6 +177,7 @@ public class MatchDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                participateShowButton.setEnabled(false);
                 recyclerView.setVisibility(View.VISIBLE);
                 getParticipatedData(matchId);
 

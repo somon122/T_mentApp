@@ -42,6 +42,7 @@ public class ProfileSetUpActivity extends AppCompatActivity {
     SaveUserInfo saveUserInfo;
     String update = null;
     ProgressBar progressBar;
+    String currentDateAndTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +56,17 @@ public class ProfileSetUpActivity extends AppCompatActivity {
         progressBar= findViewById(R.id.profileSubmitProgressBar);
         progressBar.setVisibility(View.GONE);
 
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss");
+        currentDateAndTime = sdf.format(new Date());
+
         nameET = findViewById(R.id.profileUserName);
         emailET = findViewById(R.id.profileEmailAddress);
         numberET = findViewById(R.id.profileNumber);
         referCodeET = findViewById(R.id.profileReferCode);
         numberET.getEditText().setText(saveUserInfo.getNumber());
-
+        numberET.setEnabled(false);
+        referCodeET.setVisibility(View.GONE);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             update = bundle.getString("status");
@@ -69,7 +75,7 @@ public class ProfileSetUpActivity extends AppCompatActivity {
                 numberET.getEditText().setText(saveUserInfo.getNumber());
                 emailET.getEditText().setText(saveUserInfo.getEmail());
                 submitBtn.setText("Update");
-                referCodeET.setVisibility(View.GONE);
+
             }
 
 
@@ -106,9 +112,6 @@ public class ProfileSetUpActivity extends AppCompatActivity {
         }else if (phone.isEmpty()){
             numberET.setError("Please Enter Number");
         }else {
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss");
-            String currentDateAndTime = sdf.format(new Date());
 
             if (update.equals("update")){
 
@@ -323,8 +326,4 @@ public class ProfileSetUpActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(ProfileSetUpActivity.this);
         queue.add(stringRequest);
     }
-
-
-
-
 }

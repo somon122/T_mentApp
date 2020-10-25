@@ -26,6 +26,16 @@ public class UserWalletInfo {
         String balance = sharedPreferences.getString("balance","0");
         return balance;
     }
+public void setTotalBalance (String balance){
+        editor.putString("totalBalance",balance);
+        editor.commit();
+    }
+
+    public String getTotalBalance (){
+
+        String balance = sharedPreferences.getString("totalBalance","0");
+        return balance;
+    }
 
 
 }

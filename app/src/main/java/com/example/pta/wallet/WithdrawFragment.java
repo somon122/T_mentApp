@@ -1,8 +1,11 @@
 package com.example.pta.wallet;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -92,19 +95,22 @@ public class WithdrawFragment extends Fragment {
 
         }else {
 
-            int mainBalance = Integer.parseInt(userWalletInfo.getBalance());
+            int winBalance = Integer.parseInt(userWalletInfo.getBalance());
+            int totalBalance = Integer.parseInt(userWalletInfo.getTotalBalance());
             int userAmount = Integer.parseInt(tk);
-            int lastBalance = mainBalance-userAmount;
+            int lastBalance = winBalance-userAmount;
+            int lastTotalBalance = totalBalance-userAmount;
 
             @SuppressLint("SimpleDateFormat")
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss");
             String currentDateAndTime = sdf.format(new Date());
 
-            if (mainBalance >= 100){
+            if (winBalance >= 100){
 
                 if (userAmount >= 100){
 
-                    insertWithdraw(saveUserInfo.getId(),saveUserInfo.getUserName(),tk,num, String.valueOf(lastBalance),value,"Pending", currentDateAndTime);
+                    submitBtn.setEnabled(false);
+                    confirmAlert(saveUserInfo.getId(),saveUserInfo.getUserName(),tk,num, String.valueOf(lastBalance),String.valueOf(lastTotalBalance),value,"Pending", currentDateAndTime);
 
                 }else {
 
@@ -122,7 +128,36 @@ public class WithdrawFragment extends Fragment {
 
     }
 
-    private void insertWithdraw(final String id, final String userName,final String amount,final String number,final String lastWinAmount,
+    private void confirmAlert(final String id, final String userName,final String amount,final String number,final String lastWinAmount,final String lastTotalBalance,
+                              final String method, final String pending , final String date_time) {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Confirm Alert")
+                .setMessage("Are you 100% Sure?\n\nThis Number is correct"+number)
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        submitBtn.setEnabled(false);
+                        insertWithdraw(id,userName,amount,number, lastWinAmount,lastTotalBalance,method,pending, date_time);
+
+
+
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    private void insertWithdraw(final String id, final String userName,final String amount,final String number,final String lastWinAmount,final String lastTotalBalance,
                                 final String method, final String pending , final String date_time) {
 
 
@@ -133,7 +168,10 @@ public class WithdrawFragment extends Fragment {
                 try {
                     JSONObject obj = new JSONObject(response);
                     if (obj.getBoolean("success")) {
-                        Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+
+                        startActivity(new Intent(getContext(),WalletActivity.class));
+                        Toast.makeText(getContext(), "Withdraw Success", Toast.LENGTH_SHORT).show();
+                        getActivity().finish();
                     } else {
                         Toast.makeText(getContext(), "Field", Toast.LENGTH_SHORT).show();
                     }
@@ -156,6 +194,7 @@ public class WithdrawFragment extends Fragment {
                 Params.put("userName", userName);
                 Params.put("number", number);
                 Params.put("lastWinAmount", lastWinAmount);
+                Params.put("totalBalance", lastTotalBalance);
                 Params.put("amount", amount);
                 Params.put("method", method);
                 Params.put("status", pending);

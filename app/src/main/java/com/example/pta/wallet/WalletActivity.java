@@ -112,9 +112,11 @@ public class WalletActivity extends AppCompatActivity {
                             JSONObject dataobj = jsonArray.getJSONObject(i);
                             String depositAmount = dataobj.getString("depositAmount");
                             String winAmount = dataobj.getString("winAmount");
+                            String totalBalance = dataobj.getString("totalBalance");
                             balance.setText(winAmount+"TK");
                             depositBalance.setText(depositAmount+"TK");
                             userWalletInfo.setBalance(winAmount);
+                            userWalletInfo.setTotalBalance(totalBalance);
 
                         }
 

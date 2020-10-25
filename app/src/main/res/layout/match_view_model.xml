@@ -345,6 +345,7 @@
                 android:id="@+id/resultRunnerUp1Prize"
                 android:text="RunnerUp 1 - 00 Taka"
                 android:textSize="17sp"
+                android:visibility="gone"
                 android:textColor="@color/DarkBlue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -352,9 +353,50 @@
                 android:id="@+id/resultRunnerUp2Prize"
                 android:text="RunnerUp 2 - 00 Taka"
                 android:textSize="17sp"
+                android:visibility="gone"
                 android:textColor="@color/DarkBlue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/resultRunnerUp3Prize"
+                android:text="RunnerUp 2 - 00 Taka"
+                android:textSize="17sp"
+                android:visibility="gone"
+                android:textColor="@color/DarkBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/resultRunnerUp4Prize"
+                android:text="RunnerUp 2 - 00 Taka"
+                android:textSize="17sp"
+                android:visibility="gone"
+                android:textColor="@color/DarkBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/resultRunnerUp5Prize"
+                android:text="RunnerUp 2 - 00 Taka"
+                android:textSize="17sp"
+                android:visibility="gone"
+                android:textColor="@color/DarkBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/resultRunnerUp6Prize"
+                android:text="RunnerUp 2 - 00 Taka"
+                android:textSize="17sp"
+                android:visibility="gone"
+                android:textColor="@color/DarkBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+
 
 
 

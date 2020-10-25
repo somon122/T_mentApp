@@ -1,8 +1,11 @@
 package com.example.pta.wallet;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -31,6 +34,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import es.dmoral.toasty.Toasty;
 
 public class DepositFragment extends Fragment {
 
@@ -103,7 +108,7 @@ public class DepositFragment extends Fragment {
             int dTK = Integer.parseInt(tk);
 
             if (dTK >=20){
-                insertDeposit(saveUserInfo.getId(),saveUserInfo.getUserName(),tk,num,tId,currentDateAndTime,value,"Pending");
+                confirmAlert(saveUserInfo.getId(),saveUserInfo.getUserName(),tk,num,tId,currentDateAndTime,value,"Pending");
 
             }else {
                 Toast.makeText(getContext(), "Minimum Deposit 20TK", Toast.LENGTH_SHORT).show();
@@ -113,6 +118,34 @@ public class DepositFragment extends Fragment {
         }
 
     }
+
+
+    private void confirmAlert(final String id, final String userName,final String amount,final String number,final String transactionId,final String date_time,
+                              final String method, final String pending) {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Confirm Alert")
+                .setMessage("Are you 100% Sure?\n\nThis Number is correct"+number)
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        submitBtn.setEnabled(false);
+                        insertDeposit(id,userName,amount,number,transactionId,date_time,method,pending);
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
 
     private void insertDeposit(final String id, final String userName,final String amount,final String number,final String transactionId,final String date_time,
                                 final String method, final String pending) {
@@ -125,7 +158,11 @@ public class DepositFragment extends Fragment {
                 try {
                     JSONObject obj = new JSONObject(response);
                     if (obj.getBoolean("success")) {
-                        Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+
+                        startActivity(new Intent(getContext(),WalletActivity.class));
+                        Toasty.success(getContext(), "Info Submit Success!", Toast.LENGTH_SHORT, true).show();
+                        getActivity().finish();
+
                     } else {
                         Toast.makeText(getContext(), "Try Again", Toast.LENGTH_SHORT).show();
                     }

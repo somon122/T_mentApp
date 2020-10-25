@@ -103,10 +103,15 @@ public class MatchShowActivity extends AppCompatActivity {
                             String winnerPrice = dataobj.getString("winnerPrize");
                             String runnerUpPrize1 = dataobj.getString("runnerUpPrize1");
                             String runnerUpPrize2 = dataobj.getString("runnerUpPrize2");
+                            String runnerUpPrize3 = dataobj.getString("runnerUpPrize3");
+                            String runnerUpPrize4 = dataobj.getString("runnerUpPrize4");
+                            String runnerUpPrize5 = dataobj.getString("runnerUpPrize5");
+                            String runnerUpPrize6 = dataobj.getString("runnerUpPrize6");
 
 
                             MatchClass matchClass = new MatchClass(rId,matchName,category,candidateNo,date_time,totalPrize,perKill,
-                                    entryFee,type,version,map,winnerPrice,runnerUpPrize1,runnerUpPrize2);
+                                    entryFee,type,version,map,winnerPrice,runnerUpPrize1,runnerUpPrize2 ,runnerUpPrize3 ,runnerUpPrize4
+                                    ,runnerUpPrize5,runnerUpPrize6);
                             matchClassList.add(matchClass);
                         }
 

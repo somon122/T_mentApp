@@ -47,7 +47,7 @@
                     android:layout_toRightOf="@+id/profileUserImage"
                     android:fontFamily="@font/baloo"
                     android:includeFontPadding="false"
-                    android:text="Jubair Zaman"
+                    android:text="user name"
                     android:textColor="#fff"
                     android:textSize="20sp" />
 
@@ -60,7 +60,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/profileUserImage"
                     android:includeFontPadding="false"
-                    android:text="Jubair Zaman"
+                    android:text="+8801xxxxxxxx"
                     android:textColor="#fff"
                     android:textSize="14sp" />
 

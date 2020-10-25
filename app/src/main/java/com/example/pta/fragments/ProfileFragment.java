@@ -2,11 +2,13 @@ package com.example.pta.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -28,6 +30,7 @@ import com.example.pta.ProfileSetUpActivity;
 import com.example.pta.R;
 import com.example.pta.SaveUserInfo;
 import com.example.pta.SignInActivity;
+import com.example.pta.SplashScreenActivity;
 import com.example.pta.wallet.WalletActivity;
 import com.example.pta.wallet.WithdrawAdapter;
 import com.example.pta.wallet.WithdrawClass;
@@ -80,7 +83,7 @@ public class ProfileFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logoutAlert();
+               logOutAlert();
             }
         });
 
@@ -144,7 +147,31 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
-    private void logoutAlert() {
+    private void logOutAlert() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Logout Alert")
+                .setMessage("Are you sure?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        confirmLogoutAlert();
+
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    private void confirmLogoutAlert() {
 
         AuthUI.getInstance()
                 .signOut(getContext())
@@ -178,7 +205,7 @@ public class ProfileFragment extends Fragment {
                             String totalWin = dataobj.getString("totalWin");
                             String totalBalance = dataobj.getString("totalBalance");
                             userNameTV.setText(userName);
-                            userNumberTV.setText(number);
+                            userNumberTV.setText("+"+number);
                             totalWinTV.setText(totalWin);
                             balanceTV.setText(totalBalance+"TK");
                             getTotalJoint(number);

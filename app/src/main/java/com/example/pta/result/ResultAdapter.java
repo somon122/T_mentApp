@@ -62,7 +62,6 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
     public void onBindViewHolder(@NonNull final ResultAdapter.ViewHolder holder, final int position) {
 
         resultClass = resultClassList.get(position);
-
         holder.name.setText(resultClass.getName());
         holder.date.setText(resultClass.getDate_time());
         holder.totalPrize.setText(resultClass.getTotalPrize());
@@ -72,8 +71,33 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         holder.version.setText(resultClass.getVersion());
         holder.map.setText(resultClass.getMap());
         holder.winnerPrize.setText("winner -"+resultClass.getWinnerPrice()+" Taka");
-        holder.runnerUp1.setText("RunnerUpPrize1-"+resultClass.getRunnerUpPrize1()+" Taka");
-        holder.runnerUp2.setText("RunnerUpPrize2-"+resultClass.getRunnerUpPrize2()+" Taka");
+
+        if (resultClass.getRunnerUpPrize1() != "null"){
+            holder.runnerUp1.setVisibility(View.VISIBLE);
+            holder.runnerUp1.setText("RunnerUpPrize1-"+resultClass.getRunnerUpPrize1()+" Taka");
+        }
+       if (resultClass.getRunnerUpPrize2() != "null"){
+            holder.runnerUp2.setVisibility(View.VISIBLE);
+            holder.runnerUp2.setText("RunnerUpPrize2-"+resultClass.getRunnerUpPrize2()+" Taka");
+        }
+       if (resultClass.getRunnerUpPrize3() != "null"){
+            holder.runnerUp3.setVisibility(View.VISIBLE);
+            holder.runnerUp3.setText("RunnerUpPrize3-"+resultClass.getRunnerUpPrize3()+" Taka");
+        }
+       if (resultClass.getRunnerUpPrize4() != "null"){
+
+           Toast.makeText(context, ""+resultClass.getRunnerUpPrize4(), Toast.LENGTH_SHORT).show();
+            holder.runnerUp4.setVisibility(View.VISIBLE);
+            holder.runnerUp4.setText("RunnerUpPrize4-"+resultClass.getRunnerUpPrize4()+" Taka");
+        }
+       if (resultClass.getRunnerUpPrize5() != "null"){
+            holder.runnerUp5.setVisibility(View.VISIBLE);
+            holder.runnerUp5.setText("RunnerUpPrize5-"+resultClass.getRunnerUpPrize5()+" Taka");
+        }
+       if (resultClass.getRunnerUpPrize6() != "null"){
+            holder.runnerUp6.setVisibility(View.VISIBLE);
+            holder.runnerUp6.setText("RunnerUpPrize6-"+resultClass.getRunnerUpPrize6()+" Taka");
+        }
         holder.showDataChart.setVisibility(View.GONE);
 
         getTotalJoint(resultClass.getMatchId(),saveUserInfo.getId(),holder);
@@ -125,6 +149,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
                 intent.putExtra("winnerPrice",resultClass.getWinnerPrice());
                 intent.putExtra("runnerUpPrize1",resultClass.getRunnerUpPrize1());
                 intent.putExtra("runnerUpPrize2",resultClass.getRunnerUpPrize2());
+
                 context.startActivity(intent);
 
 
@@ -195,7 +220,8 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView name,date,totalPrize,perKill, entryFee,type
-                ,version,map,winnerPrize, runnerUp1,runnerUp2;
+                ,version,map,winnerPrize, runnerUp1,runnerUp2 ,runnerUp3 ,runnerUp4
+                ,runnerUp5,runnerUp6;
         LinearLayout showDataChart, chartShower;
         Button watchMatch, jointOrNot;
 
@@ -214,6 +240,11 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             winnerPrize= itemView.findViewById(R.id.resultWinnerPrize);
             runnerUp1= itemView.findViewById(R.id.resultRunnerUp1Prize);
             runnerUp2= itemView.findViewById(R.id.resultRunnerUp2Prize);
+
+            runnerUp3= itemView.findViewById(R.id.resultRunnerUp3Prize);
+            runnerUp4= itemView.findViewById(R.id.resultRunnerUp4Prize);
+            runnerUp5= itemView.findViewById(R.id.resultRunnerUp5Prize);
+            runnerUp6= itemView.findViewById(R.id.resultRunnerUp6Prize);
 
             showDataChart= itemView.findViewById(R.id.resultPrizeChart);
             chartShower= itemView.findViewById(R.id.resultPriceDetailsShow);

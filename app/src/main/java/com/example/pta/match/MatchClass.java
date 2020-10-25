@@ -3,13 +3,15 @@ package com.example.pta.match;
 public class MatchClass {
 
     private String id, name, category,candidateNo,date_time,totalPrize,perKill, entryFee,
-            type, version,map,winnerPrice, runnerUpPrize1,runnerUpPrize2;
+            type, version,map,winnerPrice, runnerUpPrize1,runnerUpPrize2 ,runnerUpPrize3
+            ,runnerUpPrize4,runnerUpPrize5,runnerUpPrize6;
 
     public MatchClass() {}
 
     public MatchClass(String id, String name, String category, String candidateNo, String date_time,
                       String totalPrize, String perKill, String entryFee, String type, String version,
-                      String map, String winnerPrice, String runnerUpPrize1, String runnerUpPrize2) {
+                      String map, String winnerPrice, String runnerUpPrize1, String runnerUpPrize2,
+                      String runnerUpPrize3, String runnerUpPrize4, String runnerUpPrize5, String runnerUpPrize6) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -24,6 +26,10 @@ public class MatchClass {
         this.winnerPrice = winnerPrice;
         this.runnerUpPrize1 = runnerUpPrize1;
         this.runnerUpPrize2 = runnerUpPrize2;
+        this.runnerUpPrize3 = runnerUpPrize3;
+        this.runnerUpPrize4 = runnerUpPrize4;
+        this.runnerUpPrize5 = runnerUpPrize5;
+        this.runnerUpPrize6 = runnerUpPrize6;
     }
 
     public String getId() {
@@ -80,6 +86,22 @@ public class MatchClass {
 
     public String getRunnerUpPrize2() {
         return runnerUpPrize2;
+    }
+
+    public String getRunnerUpPrize3() {
+        return runnerUpPrize3;
+    }
+
+    public String getRunnerUpPrize4() {
+        return runnerUpPrize4;
+    }
+
+    public String getRunnerUpPrize5() {
+        return runnerUpPrize5;
+    }
+
+    public String getRunnerUpPrize6() {
+        return runnerUpPrize6;
     }
 }
 

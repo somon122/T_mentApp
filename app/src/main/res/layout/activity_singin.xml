@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#fff"
+    android:background="@color/colorPrimary"
     android:padding="10dp"
     tools:context=".SignInActivity">
 
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo"
-        android:textColor="#000"
+        android:textColor="@color/white"
         android:text="hey hi there,  Welcome"
         android:textSize="30sp"/>
 
@@ -30,11 +30,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="50dp"
-        android:background="#000"
+        android:background="@color/white"
         android:fontFamily="@font/baloo"
         android:onClick="singUp"
         android:text="Login"
-        android:textColor="#fff"
+        android:textColor="@color/black"
         android:textSize="20dp" />
 
     <ProgressBar

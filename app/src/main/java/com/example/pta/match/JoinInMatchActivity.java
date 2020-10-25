@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +28,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.pta.MainActivity;
 import com.example.pta.R;
 import com.example.pta.SaveUserInfo;
-import com.example.pta.wallet.WalletActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +38,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JointInMatchActivity extends AppCompatActivity {
+import es.dmoral.toasty.Toasty;
+
+public class JoinInMatchActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -165,7 +165,7 @@ public class JointInMatchActivity extends AppCompatActivity {
 
     private void confirmAlert() {
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(JointInMatchActivity.this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(JoinInMatchActivity.this);
         builder.setTitle("Confirm Alert")
                 .setMessage("Are you 100% Sure to Join?")
                 .setCancelable(false)
@@ -174,11 +174,9 @@ public class JointInMatchActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         if (userNumber != null){
-                            progressBar.setVisibility(View.VISIBLE);
-                            userJoinSubmitBtn.setEnabled(false);
                             join();
                         }else {
-                            Toast.makeText(JointInMatchActivity.this, "Try Again", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(JoinInMatchActivity.this, "Try Again", Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -231,8 +229,12 @@ public class JointInMatchActivity extends AppCompatActivity {
                 int lastBalance = balance-cost;
 
                 if (cost <=0){
+                    progressBar.setVisibility(View.VISIBLE);
+                    userJoinSubmitBtn.setEnabled(false);
                     submitJoinData( userNumber,p1);
                 }else {
+                    progressBar.setVisibility(View.VISIBLE);
+                    userJoinSubmitBtn.setEnabled(false);
                     joinFee( String.valueOf(lastBalance), userNumber,p1);
                 }
 
@@ -318,7 +320,7 @@ public class JointInMatchActivity extends AppCompatActivity {
                 return Params;
             }
         };
-        RequestQueue queue = Volley.newRequestQueue(JointInMatchActivity.this);
+        RequestQueue queue = Volley.newRequestQueue(JoinInMatchActivity.this);
         queue.add(stringRequest);
     }
 
@@ -337,17 +339,19 @@ public class JointInMatchActivity extends AppCompatActivity {
 
                     } else {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(JointInMatchActivity.this, "Try again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(JoinInMatchActivity.this, "Try again", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(JoinInMatchActivity.this, "Try again", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(JoinInMatchActivity.this, "Try again", Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -359,7 +363,7 @@ public class JointInMatchActivity extends AppCompatActivity {
                 return Params;
             }
         };
-        RequestQueue queue = Volley.newRequestQueue(JointInMatchActivity.this);
+        RequestQueue queue = Volley.newRequestQueue(JoinInMatchActivity.this);
         queue.add(stringRequest);
     }
 
@@ -382,25 +386,30 @@ public class JointInMatchActivity extends AppCompatActivity {
                             submitJoinData(number,p2);
 
                         }else {
-                            Toast.makeText(JointInMatchActivity.this, "Join is successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(JointInMatchActivity.this, MainActivity.class));
+                            Toasty.success(JoinInMatchActivity.this, "Join is successfully", Toast.LENGTH_SHORT, true).show();
+                            startActivity(new Intent(JoinInMatchActivity.this, MainActivity.class));
                             finish();
 
                         }
 
                     } else {
 
-                        Toast.makeText(JointInMatchActivity.this, "Sorry Net Problem.", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(JoinInMatchActivity.this, "Sorry Net Problem.", Toast.LENGTH_SHORT).show();
 
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(JoinInMatchActivity.this, "Sorry Net Problem.", Toast.LENGTH_SHORT).show();
 
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(JoinInMatchActivity.this, "Sorry Net Problem.", Toast.LENGTH_SHORT).show();
 
             }
         }) {
@@ -416,7 +425,7 @@ public class JointInMatchActivity extends AppCompatActivity {
                 return Params;
             }
         };
-        RequestQueue queue = Volley.newRequestQueue(JointInMatchActivity.this);
+        RequestQueue queue = Volley.newRequestQueue(JoinInMatchActivity.this);
         queue.add(stringRequest);
     }
 

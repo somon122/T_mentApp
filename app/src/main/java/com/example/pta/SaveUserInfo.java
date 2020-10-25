@@ -70,8 +70,9 @@ public class SaveUserInfo {
 
 
     public boolean checkUser(){
-        boolean number = sharedPreferences.getString("number","").isEmpty();
-        return number;
+        boolean id = sharedPreferences.getString("id","").isEmpty();
+        boolean userName = sharedPreferences.getString("userName","").isEmpty();
+        return id || userName;
     }
 
     public void delete (){

@@ -21,6 +21,7 @@ import com.example.pta.wallet.WithdrawAdapter;
 import com.example.pta.wallet.WithdrawClass;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.ui.idp.SingleSignInActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -38,18 +39,24 @@ import java.util.Map;
 
 public class SignInActivity extends AppCompatActivity {
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (saveUserInfo.checkUser()){
+            logoutAlert2();
+        }
+    }
     @Override
     public void onBackPressed() {
-
     }
 
     private static final int RC_SIGN_IN = 100;
     TextInputLayout username, password;
     List<AuthUI.IdpConfig> providers;
+    Button login;
 
     ProgressBar progressBar;
-
+    SaveUserInfo saveUserInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +67,10 @@ public class SignInActivity extends AppCompatActivity {
                 providers = Arrays.asList(
                         new AuthUI.IdpConfig.PhoneBuilder().build());
 
+                login = findViewById(R.id.login_id);
                 progressBar = findViewById(R.id.signProgressBar);
                 progressBar.setVisibility(View.GONE);
+         saveUserInfo = new SaveUserInfo(SignInActivity.this);
 
     }
 
@@ -81,6 +90,8 @@ public class SignInActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
+
+                login.setVisibility(View.GONE);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 String phoneNumber = null;
                 if (user != null) {
@@ -95,7 +106,8 @@ public class SignInActivity extends AppCompatActivity {
                     logoutAlert();
                 }
             } else {
-
+                login.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(this, "Please Try Again", Toast.LENGTH_SHORT).show();
 
             }
@@ -153,8 +165,27 @@ public class SignInActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     public void onComplete(@NonNull Task<Void> task) {
 
+                        login.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(SignInActivity.this, "Try again", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(SignInActivity.this, SignInActivity.class));
+
+                    }
+                });
+
+    }
+
+
+    private void logoutAlert2() {
+
+
+        AuthUI.getInstance()
+                .signOut(SignInActivity.this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        login.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+
                     }
                 });
 
@@ -189,21 +220,31 @@ public class SignInActivity extends AppCompatActivity {
                             }else {
 
                                 progressBar.setVisibility(View.GONE);
+                                login.setVisibility(View.GONE);
                                 logoutAlert();
                             }
                         }
 
                     } else {
                         progressBar.setVisibility(View.GONE);
+                        login.setVisibility(View.VISIBLE);
+                        logoutAlert();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    logoutAlert();
+                    progressBar.setVisibility(View.GONE);
+                    login.setVisibility(View.VISIBLE);
 
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                logoutAlert();
+                progressBar.setVisibility(View.GONE);
+                login.setVisibility(View.VISIBLE);
 
             }
         }) {
@@ -219,7 +260,4 @@ public class SignInActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(SignInActivity.this);
         queue.add(stringRequest);
     }
-
-
-
 }
